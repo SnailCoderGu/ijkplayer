@@ -255,8 +255,6 @@ static IJKAVMoviePlayerController* instance;
                                  [[NSNotificationCenter defaultCenter]
                                   postNotificationName:IJKMPMovieNaturalSizeAvailableNotification
                                   object:self];
-
-                                 [self setPlaybackVolume:_playbackVolume];
                              });
                          }];
 }
@@ -457,10 +455,6 @@ static IJKAVMoviePlayerController* instance;
     _playbackVolume = playbackVolume;
     if (_player != nil && _player.volume != playbackVolume) {
         _player.volume = playbackVolume;
-    }
-    BOOL muted = fabs(playbackVolume) < 1e-6;
-    if (_player != nil && _player.muted != muted) {
-        _player.muted = muted;
     }
 }
 

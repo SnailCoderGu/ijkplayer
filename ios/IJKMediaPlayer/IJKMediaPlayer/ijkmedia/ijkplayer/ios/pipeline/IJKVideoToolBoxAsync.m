@@ -285,8 +285,7 @@ static CMSampleBufferRef CreateSampleBufferFrom(CMFormatDescriptionRef fmt_desc,
                                       &sBufOut);
     }
 
-    if (newBBufOut)
-        CFRelease(newBBufOut);
+    CFRelease(newBBufOut);
     if (status == 0) {
         return sBufOut;
     } else {
