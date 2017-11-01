@@ -1,5 +1,5 @@
-/root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/obj/local/armeabi-v7a/objs/ijksoundtouch/source/SoundTouch/FIRFilter.o: \
- /root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksoundtouch/source/SoundTouch/FIRFilter.cpp \
+/root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/obj/local/armeabi-v7a/objs/ijksoundtouch/source/SoundTouch/FIRFilter.o: \
+ /root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksoundtouch/source/SoundTouch/FIRFilter.cpp \
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/assert.h \
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/stl/_cprolog.h \
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/stl/config/features.h \
@@ -16,9 +16,9 @@
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/stl/_config_compat_post.h \
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/math.h \
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/stdlib.h \
- /root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksoundtouch/source/SoundTouch/FIRFilter.h \
- /root/compiler/ijkplayer/ijkplayer-android/ijkmedia/ijksoundtouch/include/STTypes.h \
- /root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksoundtouch/source/SoundTouch/cpu_detect.h
+ /root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksoundtouch/source/SoundTouch/FIRFilter.h \
+ /root/compiler/ijkplayer/ijkmedia/ijksoundtouch/include/STTypes.h \
+ /root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksoundtouch/source/SoundTouch/cpu_detect.h
 
 /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/assert.h:
 
@@ -52,8 +52,8 @@
 
 /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/stdlib.h:
 
-/root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksoundtouch/source/SoundTouch/FIRFilter.h:
+/root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksoundtouch/source/SoundTouch/FIRFilter.h:
 
-/root/compiler/ijkplayer/ijkplayer-android/ijkmedia/ijksoundtouch/include/STTypes.h:
+/root/compiler/ijkplayer/ijkmedia/ijksoundtouch/include/STTypes.h:
 
-/root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksoundtouch/source/SoundTouch/cpu_detect.h:
+/root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksoundtouch/source/SoundTouch/cpu_detect.h:

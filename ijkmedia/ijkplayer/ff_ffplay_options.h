@@ -140,6 +140,12 @@ static const AVOption ffp_context_options[] = {
 
     { "packet-buffering",                   "pause output until enough packets have been read after stalling",
         OPTION_OFFSET(packet_buffering),    OPTION_INT(1, 0, 1) },
+    { "no-delay",                           "0 is close,1 is open,no any delay in read,decoder render,custom defined by gupan",
+        OPTION_OFFSET(no_delay),            OPTION_INT(0,0,1)  },
+    { "max-cached-duration",                "cached length of render frame time defined by gupan",
+        OPTION_OFFSET(max_cached_duration), OPTION_INT(0,0,2000)  },
+    { "av-sync-type",                       "sync by audio or by video or clock,custom defined by gupan",
+        OPTION_OFFSET(av_sync_type),        OPTION_INT(AV_SYNC_AUDIO_MASTER,AV_SYNC_AUDIO_MASTER,AV_SYNC_EXTERNAL_CLOCK) },
     { "sync-av-start",                      "synchronise a/v start time",
         OPTION_OFFSET(sync_av_start),       OPTION_INT(1, 0, 1) },
     { "iformat",                            "force format",

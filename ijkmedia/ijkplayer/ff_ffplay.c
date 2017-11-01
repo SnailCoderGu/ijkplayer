@@ -241,7 +241,7 @@ static void control_video_queue_duration(FFPlayer *ffp, VideoState *is) {
         }
     }
 
-    if (cached_duration > is->max_cached_duration) {
+    if (cached_duration > ffp->max_cached_duration) {
         // drop
         av_log(NULL, AV_LOG_INFO, "233 video cached_duration = %lld, nb_packets = %d.\n", cached_duration, nb_packets);
         drop_to_pts = is->videoq.last_pkt->pkt.pts - (duration / 2);  // 这里删掉一半，你也可以自己修改，依据设置进来的max_cached_duration大小
@@ -273,7 +273,7 @@ static void control_audio_queue_duration(FFPlayer *ffp, VideoState *is) {
         }
     }
 
-    if (cached_duration > is->max_cached_duration) {
+    if (cached_duration > ffp->max_cached_duration) {
         // drop
         av_log(NULL, AV_LOG_INFO, "233 audio cached_duration = %lld, nb_packets = %d.\n", cached_duration, nb_packets);
         drop_to_pts = is->audioq.last_pkt->pkt.pts - (duration / 2);
@@ -285,11 +285,10 @@ static void control_audio_queue_duration(FFPlayer *ffp, VideoState *is) {
 }
 
 static void control_queue_duration(FFPlayer *ffp, VideoState *is) {
-    if (is->max_cached_duration <= 0) {
+    if (ffp->max_cached_duration <= 0) {
         return;
     }
 
-    
     if (is->video_st) {
         return control_video_queue_duration(ffp, is);
     }
@@ -2255,7 +2254,14 @@ reload:
     dec_channel_layout =
         (af->frame->channel_layout && av_frame_get_channels(af->frame) == av_get_channel_layout_nb_channels(af->frame->channel_layout)) ?
         af->frame->channel_layout : av_get_default_channel_layout(av_frame_get_channels(af->frame));
-    wanted_nb_samples = synchronize_audio(is, af->frame->nb_samples);
+   
+    if(ffp->no_delay == 1){
+       // gupan 音频不做同步处理
+       wanted_nb_samples = af->frame->nb_samples;
+    }else{
+      wanted_nb_samples = synchronize_audio(is, af->frame->nb_samples);
+    }
+
 
     if (af->frame->format        != is->audio_src.fmt            ||
         dec_channel_layout       != is->audio_src.channel_layout ||
@@ -2365,6 +2371,9 @@ reload:
         printf("audio: delay=%0.3f clock=%0.3f clock0=%0.3f\n",
                is->audio_clock - last_clock,
                is->audio_clock, audio_clock0);
+        av_log("audio: delay=%0.3f clock=%0.3f clock0=%0.3f\n",
+               is->audio_clock - last_clock,
+               is->audio_clock, audio_clock0);
         last_clock = is->audio_clock;
     }
 #endif
@@ -2407,7 +2416,10 @@ static void sdl_audio_callback(void *opaque, Uint8 *stream, int len)
         ffp->pf_playback_volume_changed = 0;
         SDL_AoutSetPlaybackVolume(ffp->aout, ffp->pf_playback_volume);
     }
-
+    if(ffp->no_delay == 1){
+       int before = frame_queue_nb_remaining(&is->sampq);
+       av_log(NULL, AV_LOG_ERROR, "audio sampq len_before:%d",before);
+    }
     while (len > 0) {
         if (is->audio_buf_index >= is->audio_buf_size) {
            audio_size = audio_decode_frame(ffp);
@@ -2449,6 +2461,15 @@ static void sdl_audio_callback(void *opaque, Uint8 *stream, int len)
     if (!isnan(is->audio_clock)) {
         set_clock_at(&is->audclk, is->audio_clock - (double)(is->audio_write_buf_size) / is->audio_tgt.bytes_per_sec - SDL_AoutGetLatencySeconds(ffp->aout), is->audio_clock_serial, ffp->audio_callback_time / 1000000.0);
         sync_clock_to_slave(&is->extclk, &is->audclk);
+    }
+    if(ffp->no_delay == 1){
+        //gupan
+        int after = frame_queue_nb_remaining(&is->sampq);
+        while(after>2){
+            frame_queue_next(&is->sampq);
+            after = frame_queue_nb_remaining(&is->sampq);
+        }
+        av_log(NULL, AV_LOG_ERROR, "audio sampq len_after:%d",after);
     }
 }
 
@@ -2756,8 +2777,12 @@ static int stream_has_enough_packets(AVStream *st, int stream_id, PacketQueue *q
            queue->nb_packets > min_frames;
 }
 
-static int is_realtime(AVFormatContext *s)
+static int is_realtime(AVFormatContext *s,FFPlayer *ffp)
 {
+    if(ffp->no_delay == 1){
+       return 1;
+    }
+    return 1;
     if(   !strcmp(s->iformat->name, "rtp")
        || !strcmp(s->iformat->name, "rtsp")
        || !strcmp(s->iformat->name, "sdp")
@@ -2895,20 +2920,8 @@ static int read_thread(void *arg)
         }
     }
 
-    /**gupan 把原来的realtime设置为0,并从外部设置获取max_cached_duration的值****/
-    //is->realtime = is_realtime(ic);
-    is->realtime = 0;
-    AVDictionaryEntry *e = av_dict_get(ffp->player_opts, "max_cached_duration", NULL, 0);
-    if (e) {
-        int max_cached_duration = atoi(e->value);
-        if (max_cached_duration <= 0) {
-            is->max_cached_duration = 0;
-        } else {
-            is->max_cached_duration = max_cached_duration;
-        }
-    } else {
-        is->max_cached_duration = 0;
-    }
+
+    is->realtime = is_realtime(ic,ffp);
 
     if (true || ffp->show_status)
         av_dump_format(ic, 0, is->filename, 0);
@@ -3069,6 +3082,7 @@ static int read_thread(void *arg)
             ffp_toggle_buffering(ffp, 1);
             ffp_notify_msg3(ffp, FFP_MSG_BUFFERING_UPDATE, 0, 0);
             ret = avformat_seek_file(is->ic, -1, seek_min, seek_target, seek_max, is->seek_flags);
+            av_log(ffp, AV_LOG_ERROR, "test_gupan--av_seek:(%lld,%lld,%lld)\n",seek_min,seek_target,seek_max);
             if (ret < 0) {
                 av_log(NULL, AV_LOG_ERROR,
                        "%s: error while seeking\n", is->ic->filename);
@@ -3128,7 +3142,6 @@ static int read_thread(void *arg)
                 SDL_CondSignal(is->video_accurate_seek_cond);
                 SDL_UnlockMutex(is->accurate_seek_mutex);
             }
-
             ffp_notify_msg3(ffp, FFP_MSG_SEEK_COMPLETE, (int)fftime_to_milliseconds(seek_target), ret);
             ffp_toggle_buffering(ffp, 1);
         }
@@ -3161,7 +3174,7 @@ static int read_thread(void *arg)
             SDL_CondWaitTimeout(is->continue_read_thread, wait_mutex, 10);
             SDL_UnlockMutex(wait_mutex);
             continue;
-        }
+        };
         if ((!is->paused || completed) &&
             (!is->audio_st || (is->auddec.finished == is->audioq.serial && frame_queue_nb_remaining(&is->sampq) == 0)) &&
             (!is->video_st || (is->viddec.finished == is->videoq.serial && frame_queue_nb_remaining(&is->pictq) == 0))) {
@@ -3277,13 +3290,15 @@ static int read_thread(void *arg)
                 av_q2d(ic->streams[pkt->stream_index]->time_base) -
                 (double)(ffp->start_time != AV_NOPTS_VALUE ? ffp->start_time : 0) / 1000000
                 <= ((double)ffp->duration / 1000000);
+      
         /**gupan add fun**/
-        if(is->max_cached_duration>0
+        if(ffp->max_cached_duration>0
                 &&pkt->stream_index==is->video_stream
                 &&(pkt->flags&AV_PKT_FLAG_KEY)){
             control_queue_duration(ffp,is);
         }
         /**end gupan fun**/
+        
         if (pkt->stream_index == is->audio_stream && pkt_in_play_range) {
             packet_queue_put(&is->audioq, pkt);
         } else if (pkt->stream_index == is->video_stream && pkt_in_play_range
@@ -3379,7 +3394,6 @@ static VideoState *stream_open(FFPlayer *ffp, const char *filename, AVInputForma
     ffp->startup_volume = av_clip(SDL_MIX_MAXVOLUME * ffp->startup_volume / 100, 0, SDL_MIX_MAXVOLUME);
     is->audio_volume = ffp->startup_volume;
     is->muted = 0;
-    /**gupan**/
     is->av_sync_type = ffp->av_sync_type;
 
     is->play_mutex = SDL_CreateMutex();
@@ -3922,7 +3936,15 @@ int ffp_prepare_async_l(FFPlayer *ffp, const char *file_name)
     ffp_show_dict(ffp, "swr-opts   ", ffp->swr_opts);
     av_log(NULL, AV_LOG_INFO, "===================\n");
 
+    av_log(NULL, AV_LOG_ERROR, "before player-opts opensl:%d\n",ffp->opensles);
+    av_log(NULL, AV_LOG_ERROR, "before player-opts av-sync-type:%d\n",ffp->av_sync_type);
+    av_log(NULL, AV_LOG_ERROR, "before player-opts no-delay%d\n",ffp->no_delay);
+    av_log(NULL, AV_LOG_ERROR, "before player-opts max_cached_duration:%d\n",ffp->max_cached_duration);
     av_opt_set_dict(ffp, &ffp->player_opts);
+    av_log(NULL, AV_LOG_ERROR, "after player-opts opensl:%d\n",ffp->opensles);
+    av_log(NULL, AV_LOG_ERROR, "after player-opts av-sync-type:%d\n",ffp->av_sync_type);
+    av_log(NULL, AV_LOG_ERROR, "after player-opts no-delay:%d\n",ffp->no_delay);
+    av_log(NULL, AV_LOG_ERROR, "after player-opts max_cached_duration:%d\n",ffp->max_cached_duration);
     if (!ffp->aout) {
         ffp->aout = ffpipeline_open_audio_output(ffp->pipeline, ffp);
         if (!ffp->aout)

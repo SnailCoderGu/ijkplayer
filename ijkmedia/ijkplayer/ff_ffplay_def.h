@@ -393,8 +393,6 @@ typedef struct VideoState {
     SDL_mutex *accurate_seek_mutex;
     SDL_cond  *video_accurate_seek_cond;
     SDL_cond  *audio_accurate_seek_cond;
-    
-    int max_cached_duration;
 } VideoState;
 
 /* options specified by the user */
@@ -413,7 +411,7 @@ static const char* wanted_stream_spec[AVMEDIA_TYPE_NB] = {0};
 static int seek_by_bytes = -1;
 static int display_disable;
 static int show_status = 1;
-static int av_sync_type = AV_SYNC_VIDEO_MASTER;
+static int av_sync_type = AV_SYNC_AUDIO_MASTER;
 static int64_t start_time = AV_NOPTS_VALUE;
 static int64_t duration = AV_NOPTS_VALUE;
 static int fast = 0;
@@ -563,6 +561,8 @@ typedef struct FFPlayer {
     int display_disable;
     int show_status;
     int av_sync_type;
+    int no_delay;//by gupan
+    int max_cached_duration; //by gupan
     int64_t start_time;
     int64_t duration;
     int fast;
@@ -711,8 +711,8 @@ inline static void ffp_reset_internal(FFPlayer *ffp)
     memset(ffp->wanted_stream_spec, 0, sizeof(ffp->wanted_stream_spec));
     ffp->seek_by_bytes          = -1;
     ffp->display_disable        = 0;
-    ffp->show_status            = 0;
-    ffp->av_sync_type           = AV_SYNC_VIDEO_MASTER;
+    ffp->no_delay               = 0;//gupan
+    ffp->max_cached_duration    = 0;//gupan
     ffp->start_time             = AV_NOPTS_VALUE;
     ffp->duration               = AV_NOPTS_VALUE;
     ffp->fast                   = 1;
@@ -722,6 +722,8 @@ inline static void ffp_reset_internal(FFPlayer *ffp)
     ffp->autoexit               = 0;
     ffp->loop                   = 1;
     ffp->framedrop              = 0; // option
+    ffp->show_status            = 0;
+    ffp->av_sync_type           = AV_SYNC_AUDIO_MASTER;
     ffp->seek_at_start          = 0;
     ffp->infinite_buffer        = -1;
     ffp->show_mode              = SHOW_MODE_NONE;

@@ -1,7 +1,7 @@
-/root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/obj/local/armeabi-v7a/objs/ijksdl/ijksdl_timer.o: \
- /root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksdl/ijksdl_timer.c \
- /root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksdl/ijksdl_timer.h \
- /root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksdl/ijksdl_stdinc.h \
+/root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/obj/local/armeabi-v7a/objs/ijksdl/ijksdl_timer.o: \
+ /root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksdl/ijksdl_timer.c \
+ /root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksdl/ijksdl_timer.h \
+ /root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksdl/ijksdl_stdinc.h \
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/stddef.h \
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/stl/_cprolog.h \
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/stl/config/features.h \
@@ -18,13 +18,13 @@
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/stl/_config_compat_post.h \
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/stdlib.h \
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/time.h \
- /root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksdl/ijksdl_log.h \
+ /root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksdl/ijksdl_log.h \
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/stdio.h \
- /root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksdl/ijksdl_extra_log.h
+ /root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksdl/ijksdl_extra_log.h
 
-/root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksdl/ijksdl_timer.h:
+/root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksdl/ijksdl_timer.h:
 
-/root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksdl/ijksdl_stdinc.h:
+/root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksdl/ijksdl_stdinc.h:
 
 /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/stddef.h:
 
@@ -58,8 +58,8 @@
 
 /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/time.h:
 
-/root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksdl/ijksdl_log.h:
+/root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksdl/ijksdl_log.h:
 
 /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/stdio.h:
 
-/root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksdl/ijksdl_extra_log.h:
+/root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijksdl/ijksdl_extra_log.h:

@@ -1,0 +1,22 @@
+{
+    "files.associations": {
+        "ff_ffplay_def.h": "c",
+        "assert.h": "c",
+        "config.h": "c",
+        "array": "c",
+        "alloc_traits.h": "c",
+        "basic_string.h": "c",
+        "ijkthreadpool.h": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "utility": "c",
+        "math.h": "c",
+        "unistd.h": "c",
+        "ff_ffinc.h": "c",
+        "ffpipeline_android.h": "c",
+        "ffpipenode_android_mediacodec_vdec.h": "c",
+        "ijkplayer.h": "c",
+        "ff_ffplay_options.h": "c",
+        "pthreadtypes.h": "c"
+    }
+}

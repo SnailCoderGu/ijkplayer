@@ -1,5 +1,5 @@
-/root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/obj/local/armeabi-v7a/objs/ijkplayer/ijkavutil/ijkstl.o: \
- /root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkplayer/ijkavutil/ijkstl.cpp \
+/root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/obj/local/armeabi-v7a/objs/ijkplayer/ijkavutil/ijkstl.o: \
+ /root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkplayer/ijkavutil/ijkstl.cpp \
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/map \
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/stl/_prolog.h \
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/stl/_cprolog.h \

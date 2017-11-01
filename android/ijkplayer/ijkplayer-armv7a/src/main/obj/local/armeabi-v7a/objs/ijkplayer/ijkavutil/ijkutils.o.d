@@ -1,7 +1,7 @@
-/root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/obj/local/armeabi-v7a/objs/ijkplayer/ijkavutil/ijkutils.o: \
- /root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkplayer/ijkavutil/ijkutils.c \
- /root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkplayer/ijkavutil/ijkutils.h \
- /root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkplayer/ijkavutil/ijktree.h \
+/root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/obj/local/armeabi-v7a/objs/ijkplayer/ijkavutil/ijkutils.o: \
+ /root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkplayer/ijkavutil/ijkutils.c \
+ /root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkplayer/ijkavutil/ijkutils.h \
+ /root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkplayer/ijkavutil/ijktree.h \
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/errno.h \
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/stl/_cprolog.h \
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/stl/config/features.h \
@@ -23,9 +23,9 @@
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/ctype.h \
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/stl/_prolog.h
 
-/root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkplayer/ijkavutil/ijkutils.h:
+/root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkplayer/ijkavutil/ijkutils.h:
 
-/root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkplayer/ijkavutil/ijktree.h:
+/root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkplayer/ijkavutil/ijktree.h:
 
 /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/errno.h:
 

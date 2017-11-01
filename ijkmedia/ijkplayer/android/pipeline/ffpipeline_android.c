@@ -83,8 +83,10 @@ static SDL_Aout *func_open_audio_output(IJKFF_Pipeline *pipeline, FFPlayer *ffp)
 {
     SDL_Aout *aout = NULL;
     if (ffp->opensles) {
+        ALOGI("audio_output:opensles\n");
         aout = SDL_AoutAndroid_CreateForOpenSLES();
     } else {
+        ALOGI("audio_output:audiotrack\n");
         aout = SDL_AoutAndroid_CreateForAudioTrack();
     }
     if (aout)

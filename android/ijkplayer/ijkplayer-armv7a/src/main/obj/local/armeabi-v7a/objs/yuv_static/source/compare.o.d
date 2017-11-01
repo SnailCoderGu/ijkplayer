@@ -1,7 +1,7 @@
-/root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/obj/local/armeabi-v7a/objs/yuv_static/source/compare.o: \
- /root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkyuv/source/compare.cc \
- /root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkyuv/include/libyuv/compare.h \
- /root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkyuv/include/libyuv/basic_types.h \
+/root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/obj/local/armeabi-v7a/objs/yuv_static/source/compare.o: \
+ /root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkyuv/source/compare.cc \
+ /root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkyuv/include/libyuv/compare.h \
+ /root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkyuv/include/libyuv/basic_types.h \
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/stddef.h \
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/stl/_cprolog.h \
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/stl/config/features.h \
@@ -18,14 +18,14 @@
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/stl/_config_compat_post.h \
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/float.h \
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/math.h \
- /root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkyuv/include/libyuv/cpu_id.h \
- /root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkyuv/include/libyuv/row.h \
+ /root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkyuv/include/libyuv/cpu_id.h \
+ /root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkyuv/include/libyuv/row.h \
  /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/stdlib.h \
- /root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkyuv/include/libyuv/video_common.h
+ /root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkyuv/include/libyuv/video_common.h
 
-/root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkyuv/include/libyuv/compare.h:
+/root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkyuv/include/libyuv/compare.h:
 
-/root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkyuv/include/libyuv/basic_types.h:
+/root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkyuv/include/libyuv/basic_types.h:
 
 /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/stddef.h:
 
@@ -59,10 +59,10 @@
 
 /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/math.h:
 
-/root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkyuv/include/libyuv/cpu_id.h:
+/root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkyuv/include/libyuv/cpu_id.h:
 
-/root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkyuv/include/libyuv/row.h:
+/root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkyuv/include/libyuv/row.h:
 
 /root/compiler/android-ndk-r14b/sources/cxx-stl/stlport/stlport/stdlib.h:
 
-/root/compiler/ijkplayer/ijkplayer-android/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkyuv/include/libyuv/video_common.h:
+/root/compiler/ijkplayer/android/ijkplayer/ijkplayer-armv7a/src/main/jni/ijkmedia/ijkyuv/include/libyuv/video_common.h:
