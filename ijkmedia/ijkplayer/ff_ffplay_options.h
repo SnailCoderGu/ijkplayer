@@ -143,7 +143,7 @@ static const AVOption ffp_context_options[] = {
     { "no-delay",                           "0 is close,1 is open,no any delay in read,decoder render,custom defined by gupan",
         OPTION_OFFSET(no_delay),            OPTION_INT(0,0,1)  },
     { "max-cached-duration",                "cached length of render frame time defined by gupan",
-        OPTION_OFFSET(max_cached_duration), OPTION_INT(0,0,2000)  },
+        OPTION_OFFSET(max_cached_duration), OPTION_INT(0,0,20000)  },
     { "av-sync-type",                       "sync by audio or by video or clock,custom defined by gupan",
         OPTION_OFFSET(av_sync_type),        OPTION_INT(AV_SYNC_AUDIO_MASTER,AV_SYNC_AUDIO_MASTER,AV_SYNC_EXTERNAL_CLOCK) },
     { "sync-av-start",                      "synchronise a/v start time",

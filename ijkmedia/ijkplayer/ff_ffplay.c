@@ -197,7 +197,7 @@ static void drop_queue_until_pts(PacketQueue *q, int64_t drop_to_pts) {
         // 所以这里推流端设置好 GOP 的大小，如果 max_cached_duration > 2 * GOP，可以尽可能规避全部清空
         // 也可以在调用control_queue_duration之前判断新进来的视频pkt是否是关键帧，这样即使全部清空了也不会花屏
         if ((pkt1->pkt.flags & AV_PKT_FLAG_KEY) && pkt1->pkt.pts >= drop_to_pts) {
-//        if (pkt1->pkt.pts >= drop_to_pts) {
+//      if (pkt1->pkt.pts >= drop_to_pts) {
             break;
         }
         q->first_pkt = pkt1->next;
@@ -244,7 +244,8 @@ static void control_video_queue_duration(FFPlayer *ffp, VideoState *is) {
     if (cached_duration > ffp->max_cached_duration) {
         // drop
         av_log(NULL, AV_LOG_INFO, "233 video cached_duration = %lld, nb_packets = %d.\n", cached_duration, nb_packets);
-        drop_to_pts = is->videoq.last_pkt->pkt.pts - (duration / 2);  // 这里删掉一半，你也可以自己修改，依据设置进来的max_cached_duration大小
+        //drop_to_pts = is->videoq.last_pkt->pkt.pts - (duration / 2);  // 这里删掉一半，你也可以自己修改，依据设置进来的max_cached_duration大小
+        drop_to_pts = is->videoq.last_pkt->pkt.pts;//删掉整个gop
         drop_queue_until_pts(&is->videoq, drop_to_pts);
     }
 
@@ -1008,6 +1009,13 @@ static void sync_clock_to_slave(Clock *c, Clock *slave)
         set_clock(c, slave_clock, slave->serial);
 }
 
+static void sync_clock_to_slave_force(Clock *c, Clock *slave)
+{
+    double clock = get_clock(c);
+    double slave_clock = get_clock(slave);
+    set_clock(c, slave_clock, slave->serial);
+}
+
 static int get_master_sync_type(VideoState *is) {
     if (is->av_sync_type == AV_SYNC_VIDEO_MASTER) {
         if (is->video_st)
@@ -1186,7 +1194,7 @@ static void update_video_pts(VideoState *is, double pts, int64_t pos, int serial
 }
 
 /* called to display each frame */
-static void video_refresh(FFPlayer *opaque, double *remaining_time)
+static void video_refresh(FFPlayer *opaque, double *remaining_time,int *fast_flag)
 {
     FFPlayer *ffp = opaque;
     VideoState *is = ffp->is;
@@ -1229,22 +1237,39 @@ retry:
             if (is->paused)
                 goto display;
 
-            /* compute nominal last_duration */
-            last_duration = vp_duration(is, lastvp, vp);
-            delay = compute_target_delay(ffp, last_duration, is);
-
-            time= av_gettime_relative()/1000000.0;
-            if (isnan(is->frame_timer) || time < is->frame_timer)
-                is->frame_timer = time;
-            if (time < is->frame_timer + delay) {
-                *remaining_time = FFMIN(is->frame_timer + delay - time, *remaining_time);
-                goto display;
+            if(ffp->no_delay == 1){
+                if(is->videoq.nb_packets > 50&(*fast_flag == 0)){
+                    *fast_flag = 1;
+                    av_log(NULL,AV_LOG_DEBUG,"gp_log:fast_flag 加速开始");
+                }else if(is->videoq.nb_packets <= 1&&(*fast_flag == 1)){
+                    *fast_flag = 0;
+                    sync_clock_to_slave_force(&is->extclk, &is->vidclk);
+                     av_log(NULL,AV_LOG_DEBUG,"gp_log:fast_flag 加速结束");
+                }
+               
             }
-
-            is->frame_timer += delay;
-            if (delay > 0 && time - is->frame_timer > AV_SYNC_THRESHOLD_MAX)
+            if(*fast_flag == 1&&ffp->no_delay == 1){
+                delay = 0;
                 is->frame_timer = time;
+                *remaining_time = 0;
+            }else{
+                /* compute nominal last_duration */
+                last_duration = vp_duration(is, lastvp, vp);
+                delay = compute_target_delay(ffp, last_duration, is);
 
+                time= av_gettime_relative()/1000000.0;
+                if (isnan(is->frame_timer) || time < is->frame_timer)
+                    is->frame_timer = time;
+                if (time < is->frame_timer + delay) {
+                    *remaining_time = FFMIN(is->frame_timer + delay - time, *remaining_time);
+                    goto display;
+                }
+
+                is->frame_timer += delay;
+                if (delay > 0 && time - is->frame_timer > AV_SYNC_THRESHOLD_MAX)
+                    is->frame_timer = time;
+            }
+            
             SDL_LockMutex(is->pictq.mutex);
             if (!isnan(vp->pts))
                 update_video_pts(is, vp->pts, vp->pos, vp->serial);
@@ -2255,12 +2280,12 @@ reload:
         (af->frame->channel_layout && av_frame_get_channels(af->frame) == av_get_channel_layout_nb_channels(af->frame->channel_layout)) ?
         af->frame->channel_layout : av_get_default_channel_layout(av_frame_get_channels(af->frame));
    
-    if(ffp->no_delay == 1){
-       // gupan 音频不做同步处理
-       wanted_nb_samples = af->frame->nb_samples;
-    }else{
+    // if(ffp->no_delay == 1){
+    //    // gupan 音频不做同步处理
+    //    wanted_nb_samples = af->frame->nb_samples;
+    // }else{
       wanted_nb_samples = synchronize_audio(is, af->frame->nb_samples);
-    }
+    // }
 
 
     if (af->frame->format        != is->audio_src.fmt            ||
@@ -2462,15 +2487,15 @@ static void sdl_audio_callback(void *opaque, Uint8 *stream, int len)
         set_clock_at(&is->audclk, is->audio_clock - (double)(is->audio_write_buf_size) / is->audio_tgt.bytes_per_sec - SDL_AoutGetLatencySeconds(ffp->aout), is->audio_clock_serial, ffp->audio_callback_time / 1000000.0);
         sync_clock_to_slave(&is->extclk, &is->audclk);
     }
-    if(ffp->no_delay == 1){
-        //gupan
-        int after = frame_queue_nb_remaining(&is->sampq);
-        while(after>2){
-            frame_queue_next(&is->sampq);
-            after = frame_queue_nb_remaining(&is->sampq);
-        }
-        av_log(NULL, AV_LOG_ERROR, "audio sampq len_after:%d",after);
-    }
+    // if(ffp->no_delay == 1){
+    //     //gupan
+    //     int after = frame_queue_nb_remaining(&is->sampq);
+    //     while(after>2){
+    //         frame_queue_next(&is->sampq);
+    //         after = frame_queue_nb_remaining(&is->sampq);
+    //     }
+    //     av_log(NULL, AV_LOG_ERROR, "audio sampq len_after:%d",after);
+    // }
 }
 
 static int audio_open(FFPlayer *opaque, int64_t wanted_channel_layout, int wanted_nb_channels, int wanted_sample_rate, struct AudioParams *audio_hw_params)
@@ -3082,7 +3107,6 @@ static int read_thread(void *arg)
             ffp_toggle_buffering(ffp, 1);
             ffp_notify_msg3(ffp, FFP_MSG_BUFFERING_UPDATE, 0, 0);
             ret = avformat_seek_file(is->ic, -1, seek_min, seek_target, seek_max, is->seek_flags);
-            av_log(ffp, AV_LOG_ERROR, "test_gupan--av_seek:(%lld,%lld,%lld)\n",seek_min,seek_target,seek_max);
             if (ret < 0) {
                 av_log(NULL, AV_LOG_ERROR,
                        "%s: error while seeking\n", is->ic->filename);
@@ -3291,12 +3315,18 @@ static int read_thread(void *arg)
                 (double)(ffp->start_time != AV_NOPTS_VALUE ? ffp->start_time : 0) / 1000000
                 <= ((double)ffp->duration / 1000000);
       
+        
         /**gupan add fun**/
+       
         if(ffp->max_cached_duration>0
                 &&pkt->stream_index==is->video_stream
                 &&(pkt->flags&AV_PKT_FLAG_KEY)){
-            control_queue_duration(ffp,is);
+            // control_queue_duration(ffp,is);
+            av_log(NULL,AV_LOG_INFO,"gp_log:max_cached_before-is->videoq len:%d",is->videoq.nb_packets);
+            control_video_queue_duration(ffp,is);
+            av_log(NULL,AV_LOG_INFO,"gp_log:max_cached_after-is->videoq len:%d",is->videoq.nb_packets);
         }
+       
         /**end gupan fun**/
         
         if (pkt->stream_index == is->audio_stream && pkt_in_play_range) {
@@ -3309,6 +3339,8 @@ static int read_thread(void *arg)
         } else {
             av_packet_unref(pkt);
         }
+
+        av_log(NULL,AV_LOG_INFO,"gp_log:is->videoq len:%d",is->videoq.nb_packets);
 
         ffp_statistic_l(ffp);
 
@@ -3445,12 +3477,13 @@ static int video_refresh_thread(void *arg)
     FFPlayer *ffp = arg;
     VideoState *is = ffp->is;
     double remaining_time = 0.0;
+    int fast_flag = 0;
     while (!is->abort_request) {
         if (remaining_time > 0.0)
             av_usleep((int)(int64_t)(remaining_time * 1000000.0));
         remaining_time = REFRESH_RATE;
         if (is->show_mode != SHOW_MODE_NONE && (!is->paused || is->force_refresh))
-            video_refresh(ffp, &remaining_time);
+            video_refresh(ffp, &remaining_time,&fast_flag);
     }
 
     return 0;
