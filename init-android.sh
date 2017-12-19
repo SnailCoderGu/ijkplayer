@@ -25,9 +25,10 @@ IJK_FFMPEG_LOCAL_REPO=extra/ffmpeg
 set -e
 TOOLS=tools
 
+echo "gupan no more get git version"
 git --version
 
-echo "== pull ffmpeg base =="
+echo "== pull ffmpeg base gupan no more get=="
 sh $TOOLS/pull-repo-base.sh $IJK_FFMPEG_UPSTREAM $IJK_FFMPEG_LOCAL_REPO
 
 function pull_fork()
@@ -39,6 +40,7 @@ function pull_fork()
     cd -
 }
 
+echo "gupan no more pull_fork"
 pull_fork "armv5"
 pull_fork "armv7a"
 pull_fork "arm64"
